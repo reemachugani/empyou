@@ -1,4 +1,4 @@
 *.pyc
 staticfiles
 .DS_Store
-settings/base.py
+base.py
