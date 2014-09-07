@@ -1,0 +1,37 @@
+{% load staticfiles %}
+
+<html>
+	<head>
+		<title> 
+			{% block title %} Empower Yourself {% endblock title %} 
+		</title>
+
+		{% block stylesheets %}
+			<link rel="stylesheet" type="text/css" href="/static/css/bootstrap.css">
+			<link rel="stylesheet" type="text/css" href="/static/css/base.css">
+		{% endblock stylesheets %}
+
+	    <script type="text/javascript" src="//use.typekit.net/gpi6htx.js"></script>
+		<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+	</head>
+	<body>
+		<div class="container-fluid">
+			<div class="row site-banner">
+				<div class="col-md-1"></div>
+				<div class="col-md-2" id="logo">				
+					<img src="/static/images/logo.png" height="100px"/>
+				</div>
+				<div class="col-md-6"></div>
+				<div class="col-md-3">					
+					<h4> <a href=""> <span class="glyphicon glyphicon-user"></span> You</a> </h4>
+				</div>
+			</div>
+
+			<div class="row" id="content">
+				{% block content %}
+				{% endblock content %}
+			</div>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,24 @@
+* LOGIN/ LOGOUT: Add social auth app - source: art & logic - tutorial on adding facebook/twitter/google authentication to a django app
+
+* if logged in - redirect to home, if not - sign up page
+
+* add a post_signal to Answer (question + answered_by -> unique) - for more security (answer textarea is made hidden)
+
+* upvote mechanism, not display upvote on user's answer
+
+* Each questions page (url - slug?)
+
+* link to questions, question_base.html
+
+* profiles page - display questions answered
+
+* page with question and user's answer - url answer id
+
+* add custom_context_processors for recent links
+
+
+Debug 
+======
+
+* $foreman start - error SECRET KEY cannot be empty
+* fix the can_answer property for text_area

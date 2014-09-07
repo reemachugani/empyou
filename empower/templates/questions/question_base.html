@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+	<div class="col-md-3"></div>
+	
+	<div class="col-md-5">
+		{% block question_answers %}
+		{% endblock question_answers %}
+	</div>
+
+	<div class="col-md-3" id="recent-links">
+	<!-- add links using custom_context_processors -->
+	</div>
+
+{% endblock %}

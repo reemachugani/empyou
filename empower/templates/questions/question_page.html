@@ -1,0 +1,31 @@
+{% extends "questions/question_base.html" %}
+
+{% block question_answers %}
+	<div class="question-section">
+		<h2>{{question.question}}</h2>
+		<small>{{question.created}}</small>
+	</div>
+
+	<div class="answer-section">
+		{% if can_answer %}
+			<div class="answer">
+			<textarea class="form-control" rows="6" placeholder="What do you say?"></textarea>
+			</div>
+			<button type="submit" class="btn btn-primary">
+				<span class="glyphicon glyphicon-upload"></span> Submit 
+			</button>
+		{% endif %}
+		<div>
+			{% for ans in answers %}
+			<div class="answer">
+				<small class="text-muted">{{ans.answered_by.name}} added on {{ans.modified}}</small>
+				<p>{{ans.answer}}</p>				
+				<p>
+					<span class="glyphicon glyphicon-thumbs-up"></span>
+					<button type="button" class="btn btn-default btn-xs"> Upvote </button> {{ans.upvotes}}
+				</p>
+			</div>
+			{% endfor %}
+		</div>
+	</div>
+{% endblock question_answers %}

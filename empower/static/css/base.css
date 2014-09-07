@@ -1,0 +1,26 @@
+.center{
+	text-align: center;
+}
+
+.left{
+	text-align: left;
+}
+
+.right{
+	text-align: right;
+}
+
+.site-banner{
+	background-color: #D9534F;
+}
+
+.question-section{
+	padding-bottom: 20px;
+	border-bottom: solid 1px #BDBDBD;
+}
+
+.answer{
+	padding-top: 20px;	
+	padding-bottom: 6px;
+}
+
