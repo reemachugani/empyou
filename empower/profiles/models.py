@@ -51,7 +51,7 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
 		unique=True,
 		db_index=True,)
 
-	USERNAME_FIELD = 'email'
+	USERNAME_FIELD = 'email'	# returned when get_username() is called
 	REQUIRED_FIELDS = ['name', ]
 
 	is_active = models.BooleanField(default=True)

@@ -2,18 +2,21 @@
 
 {% block question_answers %}
 	<div class="question-section">
-		<h2>{{question.question}}</h2>
+		<h2>{{question.title}}</h2>
 		<small>{{question.created}}</small>
 	</div>
 
 	<div class="answer-section">
 		{% if can_answer %}
-			<div class="answer">
-			<textarea class="form-control" rows="6" placeholder="What do you say?"></textarea>
-			</div>
-			<button type="submit" class="btn btn-primary">
-				<span class="glyphicon glyphicon-upload"></span> Submit 
-			</button>
+			<form method="POST" action=".">
+			{% csrf_token %}
+				<div class="answer" class="form-control">
+				{{form.answer}}
+				</div>
+				<button type="submit" class="btn btn-primary">
+					<span class="glyphicon glyphicon-upload"></span> Submit 
+				</button>
+			</form>
 		{% endif %}
 		<div>
 			{% for ans in answers %}
