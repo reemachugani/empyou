@@ -1,6 +1,7 @@
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from models import Question, Answer
+from voting.models import Vote
 from django.forms import ModelForm, Textarea
 
 class AnswerForm(ModelForm):
@@ -19,6 +20,9 @@ def home(request):
 
 	ques = Question.objects.all()[0]
 	return render_question_page(request, ques)
+
+def all_questions_page(request):
+	return render_to_response('questions/all_questions_page.html', {'questions': Question.objects.all()}, context_instance=RequestContext(request))
 
 def view_question_page(request, slug):
 	"""
@@ -41,7 +45,8 @@ def render_question_page(request, question):
 	answers = Answer.objects.filter(question = question)
 	can_answer = can_user_answer(request, question)
 	form = AnswerForm()
-	return render_to_response('questions/question_page.html', {'question': question, 'answers': answers, 'can_answer': can_answer, 'form': form}, context_instance=RequestContext(request))
+	votes_from_user = Vote.objects.get_for_user_in_bulk(answers, request.user)
+	return render_to_response('questions/question_page.html', {'question': question, 'answers': answers, 'can_answer': can_answer, 'form': form, 'votes_from_user': votes_from_user}, context_instance=RequestContext(request))
 
 def can_user_answer(request, ques):
 	"""

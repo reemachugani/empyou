@@ -23,10 +23,12 @@
 			<div class="answer">
 				<small class="text-muted">{{ans.answered_by.name}} added on {{ans.modified}}</small>
 				<p>{{ans.answer}}</p>				
+				{% ifnotequal ans.answered_by user %}
 				<p>
 					<span class="glyphicon glyphicon-thumbs-up"></span>
-					<button type="button" class="btn btn-default btn-xs"> Upvote </button> {{ans.upvotes}}
+					<button type="button" class="btn btn-default btn-xs"> {% if ans.pk in votes_from_user %} Nah {% else %} Cool {% endif %} </button> {{ans.votes.count}}
 				</p>
+				{% endifnotequal %}
 			</div>
 			{% endfor %}
 		</div>

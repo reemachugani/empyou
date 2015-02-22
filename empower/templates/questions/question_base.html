@@ -1,15 +1,35 @@
 {% extends "base.html" %}
 
 {% block content %}
-	<div class="col-md-3"></div>
+	<div class="col-md-2"></div>
 	
 	<div class="col-md-5">
 		{% block question_answers %}
 		{% endblock question_answers %}
 	</div>
 
+	<div class="col-md-1"></div>
+
 	<div class="col-md-3" id="recent-links">
-	<!-- add links using custom_context_processors -->
+		{% block sidebar %}
+
+		<div id="recentQuestions">
+			<h4>Recent questions</h4>
+			{% for ques in recent_questions %}
+				<div><a href={{ ques.get_absolute_url }}>{{ ques.title }}</a></div>
+			{% endfor %}
+			<a href={% url "all_questions" %}> View all... </a>
+		</div>
+
+		<div id="popularQuestions">
+			<h4>Popular questions</h4>
+			{% for ques,votes in popular_questions %}
+				<div><a href={{ ques.get_absolute_url }}>{{ ques.title }}</a> {{ votes }}</div>
+			{% endfor %}
+			<a href={% url "all_questions" %}> View all... </a>
+		</div>
+
+		{% endblock sidebar %}
 	</div>
 
 {% endblock %}
