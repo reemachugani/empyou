@@ -1,8 +1,11 @@
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
+from django.http import HttpResponse
+from django.forms import ModelForm, Textarea
+from django.contrib.auth.decorators import login_required
 from models import Question, Answer
 from voting.models import Vote
-from django.forms import ModelForm, Textarea
+import json
 
 class AnswerForm(ModelForm):
 	class Meta:
@@ -57,3 +60,20 @@ def can_user_answer(request, ques):
 		if not ans:
 			return True		
 	return False
+
+@login_required
+def vote_answer(request, ans_id):
+	if request.method == 'POST':
+		vote = (request.POST.get('vote') == "true")
+		answer = Answer.objects.get(pk=ans_id)
+		Vote.objects.record_vote(answer, request.user, vote)
+		response_data = {}
+		response_data['updated_vote'] = Vote.objects.get_votes(answer)
+		return HttpResponse(
+			json.dumps(response_data),
+			content_type="application/json"
+		)
+	return HttpResponse(
+			json.dumps({"nothing to see": "this isn't happening"}),
+			content_type="application/json"
+		)
