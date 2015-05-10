@@ -4,30 +4,59 @@
 
 * add a post_signal to Answer (question + answered_by -> unique) - for more security (answer textarea is made hidden)
 
-* upvote mechanism, not display upvote on user's answer
+* upvote mechanism, not display upvote on user's answer - DONE
 
 * profiles page - display questions answered
 
 * page with question and user's answer - url answer id
+
+* Logo should redirect to today's question.
 
 
 Debug 
 ======
 
 * $foreman start - error SECRET KEY cannot be empty
-* error when there is a duplicate question title, not crash to give django error page. - to be done in save method/ admin page for question model.
+
+* error when there is a duplicate question title, not crash to give django error page. 
+- to be done in save method/ admin page for question model.
 
 * popular questions should show up
 - fix voting manager.py
 
+
+Questions
+---------
+- All answers - partial loading beyong limit (say 10)
+- Answer in decreasing order of votes
+- All questions page - partial loading
+- Share answers
+
+
 Voting
 ------
+- Upvote shouldn't show in user's own answer - DONE
+- Upvote button (Nice/ not really) should show up depending on upvoted or not - DONE 
+- vote button: href=url for recording vote - DONE
+- Check if button is like/unlike (based on user's previous selection) - send value of vote (appear without reload) - DONE
+- add view for the url 'vote_answer'. - DONE
+- get the answer object being voted and pass to the ajax post request - DONE	
+- voting - [loginrequired] decorator - DONE
 
-- Upvote shouldn't show in user's own answer - done
-- Upvote button (Nice/ not really) should show up depending on upvoted or not - done
-- 
+- answering - [loginrequired] decorator
 
-- vote button: href=url for recording vote
-- Check if button is like/unlike (based on user's previous selection) - send value of vote= true/false accordingly.
 
-- voting, answering - [loginrequired] decorator
+Profile
+-------
+- profile_base template
+- profile_page template
+- profile urls
+- Partial loading of all questions answered
+
+
+Need thought
+============
+- username? / only email
+- Name display format - first name (+ last name)/ email/ username
+- Profile page url - user id/ username
+- Profile - all questions answered, excerpt of user's answer, can be expanded. No need to show upvoted answers.
