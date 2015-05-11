@@ -1,56 +1,7 @@
 {% extends "questions/question_base.html" %}
 
-{% block page_scripts %} 
-	<script type="text/javascript">
-	function getCookie(name) {
-		var cookieValue = null;
-		if (document.cookie && document.cookie != '') {
-			var cookies = document.cookie.split(';');
-			for (var i = 0; i < cookies.length; i++) {
-				var cookie = jQuery.trim(cookies[i]);
-				// Does this cookie string begin with the name we want?
-				if (cookie.substring(0, name.length + 1) == (name + '=')) {
-					cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-					break;
-				}
-			}
-		}
-		return cookieValue;
-	}
-	var csrftoken = getCookie('csrftoken');
-
-	function csrfSafeMethod(method) {
-		// these HTTP methods do not require CSRF protection
-		return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-	}
-	$.ajaxSetup({
-		beforeSend: function(xhr, settings) {
-			if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-	 			xhr.setRequestHeader("X-CSRFToken", csrftoken);
-			}
-		}
-	});
-
-	$(document).ready(function(){
-		$('#upvote').on('click',function(){
-			$.ajax({
-				data: { vote: (($(this).text() == "Like")? "true" : "false") },
-				type: 'POST',
-				url: $(this).data('update-url'),
-
-				success : function(json) {
-					console.log(json); // log the returned json to the console
-					$("#ans-vote-count").text(json.updated_vote);
-					console.log("success"); // another sanity check
-					if($('#upvote').text() == "Dislike")
-						$('#upvote').text("Like");
-					else
-						$('#upvote').text("Dislike");
-				},
-			});
-		}); 
-	});
-	</script>
+{% block page_scripts %}  
+	<script type="text/javascript" src="{{ STATIC_URL }}js/questions/voting.js"></script>
 {% endblock page_scripts %}
 
 {% block question_answers %}
@@ -73,16 +24,20 @@
 		{% endif %}
 		<div>
 			{% for ans in answers %}
-			<div class="answer">
-				<small class="text-muted">{{ans.answered_by.name}} added on {{ans.modified}}</small>
-				<p>{{ans.answer}}</p>	
-				{% ifnotequal ans.answered_by user %}
-				<p name="csrfmiddlewaretoken" value="{% csrf_token %}">
-					<span class="glyphicon glyphicon-thumbs-up"></span>
-					<button type="button" class="btn btn-default btn-xs" id="upvote" data-update-url="{% url 'vote_answer' ans.pk %}">{% if ans.pk in votes_from_user %}Dislike{% else %}Like{% endif %}</button> &nbsp; <span id="ans-vote-count">{{ans.votes.count}}</span>
-				</p>
-				{% endifnotequal %}
-			</div>
+				<div class="answer">
+					<small class="text-muted">{{ans.answered_by.name}} added on {{ans.modified}}</small>
+					<p>{{ans.answer}}</p>	
+					{% if user.is_authenticated %}
+						{% ifnotequal ans.answered_by user %}
+							<p name="csrfmiddlewaretoken" value="{% csrf_token %}">
+								<span class="glyphicon glyphicon-thumbs-up"></span>
+								<button type="button" class="btn btn-default btn-xs" id="upvote" data-update-url="{% url 'vote_answer' ans.pk %}">{% if ans.pk in votes_from_user %}Dislike{% else %}Like{% endif %}</button> <span class="answer-vote-count"> {{ans.votes.count}} vote{{ans.votes.count|pluralize}}</span>
+							</p>
+						{% endifnotequal %}
+					{% else %}
+						<small class="text-muted">{{ans.votes.count}} vote{{ans.votes.count|pluralize}}</small>
+					{% endif %}
+				</div>
 			{% endfor %}
 		</div>
 	</div>

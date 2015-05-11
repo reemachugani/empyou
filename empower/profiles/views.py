@@ -6,6 +6,9 @@ from questions.models import Question, Answer
 from voting.models import Vote
 
 def profile_page(request):
+	"""
+	displays user details and questions answered
+	"""
 	user = request.user
 	answers = Answer.objects.filter(answered_by = request.user)
 	return render_to_response('profiles/profile_page.html', {'user': user, 'answers': answers}, context_instance=RequestContext(request))

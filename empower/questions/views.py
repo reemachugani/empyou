@@ -1,4 +1,4 @@
-from django.shortcuts import render_to_response, get_object_or_404
+from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.http import HttpResponse
 from django.forms import ModelForm, Textarea
@@ -25,6 +25,9 @@ def home(request):
 	return render_question_page(request, ques)
 
 def all_questions_page(request):
+	"""
+	displays all the questions
+	"""
 	return render_to_response('questions/all_questions_page.html', {'questions': Question.objects.all()}, context_instance=RequestContext(request))
 
 def view_question_page(request, slug):
@@ -63,6 +66,9 @@ def can_user_answer(request, ques):
 
 @login_required
 def vote_answer(request, ans_id):
+	"""
+	handles the upvoting event and updates the Vote model
+	"""
 	if request.method == 'POST':
 		vote = (request.POST.get('vote') == "true")
 		answer = Answer.objects.get(pk=ans_id)
@@ -77,3 +83,11 @@ def vote_answer(request, ans_id):
 			json.dumps({"nothing to see": "this isn't happening"}),
 			content_type="application/json"
 		)
+
+def view_answer_page(request, id):
+	"""
+	displays the answer page based on the id
+	"""
+	answer = Answer.objects.get(id=id)
+	vote_from_user = (Vote.objects.get_for_user(answer, request.user) != None)
+	return render_to_response('questions/answer_page.html', {'answer': answer, 'vote_from_user': vote_from_user}, context_instance=RequestContext(request))

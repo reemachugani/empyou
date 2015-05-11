@@ -43,6 +43,10 @@ class Answer(TimeStampedModel):
 	def __unicode__(self):
 		return "%s's answer to %s" %(self.answered_by.name, self.question.title)
 
+	@models.permalink
+	def get_absolute_url(self):
+		return ('view_answer', None, {'id': self.id})
+
 	class Meta:
 		ordering = ["-created"]
 		unique_together = (('question', 'answered_by'),)

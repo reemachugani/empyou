@@ -30,7 +30,11 @@ Questions
 - All answers - partial loading beyong limit (say 10)
 - Answer in decreasing order of votes
 - All questions page - partial loading
-- Share answers
+
+-* Each answer has unique url (question and that answer)
+-* Share answers: social networks (requires answer's url)
+-* Notification: for every upvote to their answer
+-* Anonymously answer (check box to answer anonymously)
 
 
 Voting
@@ -53,10 +57,29 @@ Profile
 - profile urls
 - Partial loading of all questions answered
 
+-* Mention if answered sth anonymously
+-* Profile - all questions answered, excerpt of user's answer (expandable/ link to actual answer). 
+-* All upvoted answers
+
 
 Need thought
 ============
 - username? / only email
 - Name display format - first name (+ last name)/ email/ username
 - Profile page url - user id/ username
-- Profile - all questions answered, excerpt of user's answer, can be expanded. No need to show upvoted answers.
+
+
+
+- popular questions - NO
+- subscription to questions - NO
+- 
+
+
+UI ideas
+========
+- Left side panel with a photo every day, sth like medium
+
+
+Marketing ideas
+===============
+- Prepopulate questions with few answers (by invite, excerpts from others' articles)

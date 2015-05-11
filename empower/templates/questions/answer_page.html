@@ -1,0 +1,29 @@
+{% extends "questions/question_base.html" %}
+
+{% block page_scripts %}
+	<script type="text/javascript" src="{{ STATIC_URL }}js/questions/voting.js"></script>
+{% endblock page_scripts %}
+
+{% block question_answers %}
+	<div class="question-section">
+		<h2>{{answer.question.title}}</h2>
+		<small>{{answer.question.created}}</small>
+	</div>
+
+	<div class="answer-section">
+		<div class="answer">
+			<small class="text-muted">{{answer.answered_by.name}} added on {{answer.modified}}</small>
+			<p>{{answer.answer}}</p>
+			{% if user.is_authenticated %}
+				{% ifnotequal answer.answered_by user %}
+					<p name="csrfmiddlewaretoken" value="{% csrf_token %}">
+						<span class="glyphicon glyphicon-thumbs-up"></span>
+						<button type="button" class="btn btn-default btn-xs" id="upvote" data-update-url="{% url 'vote_answer' answer.pk %}">{% if vote_from_user %}Dislike{% else %}Like{% endif %}</button> <span class="answer-vote-count"> {{answer.votes.count}} vote{{answer.votes.count|pluralize}}</span>
+					</p>
+				{% endifnotequal %}
+			{% else %}
+				<small class="text-muted">{{answer.votes.count}} vote{{answer.votes.count|pluralize}}</small>
+			{% endif %}
+		</div>
+	</div>	
+{% endblock question_answers %}
