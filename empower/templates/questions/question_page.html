@@ -17,6 +17,7 @@
 				<div class="answer" class="form-control">
 				{{form.answer}}
 				</div>
+				<span> {{form.anonymous}} Answer as Anonymous</span>
 				<button type="submit" class="btn btn-primary">
 					<span class="glyphicon glyphicon-upload"></span> Submit 
 				</button>
@@ -25,15 +26,23 @@
 		<div>
 			{% for ans in answers %}
 				<div class="answer">
-					<small class="text-muted">{{ans.answered_by.name}} added on {{ans.modified}}</small>
+					<small class="text-muted">
+						{% if ans.anonymous %}
+							Anonymous
+						{% else %}
+							<a href="{% url 'profile_page' ans.answered_by.pk %}">{{ans.answered_by.name}} </a>
+						{% endif %}
+						added on {{ans.modified}}
+					</small>
 					<p>{{ans.answer}}</p>	
-					{% if user.is_authenticated %}
-						{% ifnotequal ans.answered_by user %}
+					{% if user.is_authenticated and ans.answered_by != user %}
 							<p name="csrfmiddlewaretoken" value="{% csrf_token %}">
 								<span class="glyphicon glyphicon-thumbs-up"></span>
-								<button type="button" class="btn btn-default btn-xs" id="upvote" data-update-url="{% url 'vote_answer' ans.pk %}">{% if ans.pk in votes_from_user %}Dislike{% else %}Like{% endif %}</button> <span class="answer-vote-count"> {{ans.votes.count}} vote{{ans.votes.count|pluralize}}</span>
+								<button type="button" class="btn btn-default btn-xs upvote" id="upvote-{{ans.pk}}" data-update-url="{% url 'vote_answer' ans.pk %}">
+									{% if ans.pk in votes_from_user %}Dislike{% else %}Like{% endif %}
+								</button> 
+								<span id="answer-vote-count-{{ans.pk}}"> {{ans.votes.count}} vote{{ans.votes.count|pluralize}} </span>
 							</p>
-						{% endifnotequal %}
 					{% else %}
 						<small class="text-muted">{{ans.votes.count}} vote{{ans.votes.count|pluralize}}</small>
 					{% endif %}

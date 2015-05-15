@@ -14,20 +14,41 @@
 	    <script type="text/javascript" src="//use.typekit.net/gpi6htx.js"></script>
 		<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
 		<script type="text/javascript" src="{{ STATIC_URL }}js/jquery-1.11.2.min.js"></script> 
-
+		<script type="text/javascript">
+		$(document).ready(function(){
+			$('#notification').on('click',function(){
+				$('#notification-menu').toggle();
+			});
+		});
+		</script>
 		{% block page_scripts %} {% endblock page_scripts %}
 
 	</head>
 	<body>
+		{% load notifications_tags %}
+		{% notifications_unread as unread_count %}
 		<div class="container-fluid">
 			<div class="row site-banner">
 				<div class="col-md-1"></div>
 				<div class="col-md-2" id="logo">				
-					<img src="/static/images/logo.png" height="100px"/>
+					<a href="{% url 'home' %}"> <img src="/static/images/logo.png" height="100px"/> </a>
 				</div>
 				<div class="col-md-6"></div>
-				<div class="col-md-3">					
-					<h4> <a href=""> <span class="glyphicon glyphicon-user"></span> You</a> </h4>
+				<div class="col-md-2">					
+					<div> <a href="{% url 'profile_page' user.pk %}"> <span class="glyphicon glyphicon-user"></span> You</a> 
+
+						<div class="dropdown" id="notification-div" style="float:right">
+							<a id="notification" href="#" class="dropdown-toggle" data-target="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" aria-describedby="{{ unread_notifications.count }} notifications" aria-label="Open notifications">
+								<span class="glyphicon glyphicon-bell"></span><span class="badge"> {{ unread_notifications_count }}</span>
+							</a>
+							<ul class="dropdown-menu" id="notification-menu" role="menu" aria-labelledby="notification">
+								{% for notify in all_notifications %}
+									<li role="presentation" {% if notify.unread %} style="background-color:yellow" {% endif %}> <a href="{% url 'view_answer' notify.action_object.id %}" onclick="{{ notify.mark_as_read }}"> {{notify.actor}} {{notify.verb}} {{notify.action_object}} </a> <small> {{notify.timesince}} ago </small></li>
+									<li role="presentation" class="divider"></li>
+								{% endfor %}
+							</ul>
+						</div>						
+					</div>
 				</div>
 			</div>
 

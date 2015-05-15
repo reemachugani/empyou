@@ -1,5 +1,6 @@
 from questions.models import Question
 from voting.models import Vote
+from notifications.models import Notification
 
 def recent_questions(request):
 	questions = Question.objects.all()
@@ -19,3 +20,6 @@ def popular_questions(request):
 			question_votes_dict[ques] = all_votes[ques]
 	return {'popular_questions': question_votes_dict}
 
+def unread_notifications(request):
+	all_notifications = Notification.objects.filter(recipient_id=request.user.id)
+	return {'all_notifications': all_notifications, 'unread_notifications_count': all_notifications.unread().count()}

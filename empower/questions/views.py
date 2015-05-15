@@ -1,16 +1,19 @@
+from django.contrib.auth.decorators import login_required
+from django.db.models import Count
+from django.forms import ModelForm, Textarea
+from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.template import RequestContext
-from django.http import HttpResponse
-from django.forms import ModelForm, Textarea
-from django.contrib.auth.decorators import login_required
 from models import Question, Answer
+from notifications import notify
+from notifications.models import Notification
 from voting.models import Vote
 import json
 
 class AnswerForm(ModelForm):
 	class Meta:
 		model = Answer
-		fields = ['answer']
+		fields = ['answer', 'anonymous']
 		widgets = {
 			'answer' : Textarea(attrs={'rows': 6, 'style': 'width: 100%;'}),
 		}
@@ -48,7 +51,7 @@ def render_question_page(request, question):
 			answer.question = question
 			answer.answered_by = request.user
 			answer.save()		
-	answers = Answer.objects.filter(question = question)
+	answers = question.answer_set.all()
 	can_answer = can_user_answer(request, question)
 	form = AnswerForm()
 	votes_from_user = Vote.objects.get_for_user_in_bulk(answers, request.user)
@@ -67,14 +70,21 @@ def can_user_answer(request, ques):
 @login_required
 def vote_answer(request, ans_id):
 	"""
-	handles the upvoting event and updates the Vote model
+	handles the upvoting event, updates the Vote model, and sends notification to User
 	"""
 	if request.method == 'POST':
 		vote = (request.POST.get('vote') == "true")
 		answer = Answer.objects.get(pk=ans_id)
 		Vote.objects.record_vote(answer, request.user, vote)
+		if vote:
+			notify.send(request.user, recipient=answer.answered_by, verb=u'upvoted', action_object=answer, target=answer)
+		else:
+			notification_old = Notification.objects.filter(actor_object_id=request.user.id, verb=u'upvoted', action_object_object_id=ans_id)
+			if notification_old:
+				notification_old[0].delete()
 		response_data = {}
 		response_data['updated_vote'] = Vote.objects.get_votes(answer)
+		response_data['pk'] = answer.pk
 		return HttpResponse(
 			json.dumps(response_data),
 			content_type="application/json"

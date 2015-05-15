@@ -1,7 +1,8 @@
 from django.db import models
+from django.conf import settings
 from django.contrib.auth import get_user_model
-from django.utils.text import slugify
 from django.contrib.contenttypes import generic
+from django.utils.text import slugify
 from profiles.models import UserProfile
 from voting.models import Vote
 
@@ -37,8 +38,9 @@ class Question(TimeStampedModel):
 class Answer(TimeStampedModel):
 	answer = models.TextField()
 	question = models.ForeignKey(Question)
-	answered_by = models.ForeignKey(get_user_model())
+	answered_by = models.ForeignKey(settings.AUTH_USER_MODEL)
 	votes = generic.GenericRelation(Vote)
+	anonymous = models.BooleanField(default=False, blank=False)
 
 	def __unicode__(self):
 		return "%s's answer to %s" %(self.answered_by.name, self.question.title)
@@ -46,6 +48,11 @@ class Answer(TimeStampedModel):
 	@models.permalink
 	def get_absolute_url(self):
 		return ('view_answer', None, {'id': self.id})
+
+	def make_anonymous(self):
+		if not self.anonymous:
+			self.anonymous = True
+			self.save()
 
 	class Meta:
 		ordering = ["-created"]

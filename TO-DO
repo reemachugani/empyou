@@ -31,10 +31,13 @@ Questions
 - Answer in decreasing order of votes
 - All questions page - partial loading
 
--* Each answer has unique url (question and that answer)
+-* Each answer has unique url (question and that answer) - DONE
 -* Share answers: social networks (requires answer's url)
 -* Notification: for every upvote to their answer
--* Anonymously answer (check box to answer anonymously)
+	- Notification shown to the recipient - DONE
+	- Notification list with link to the upvoted/target answer - DONE
+	- Delete the notification when unvoted by a user - DONE
+-* Anonymously answer (check box to answer anonymously) - DONE
 
 
 Voting
@@ -52,13 +55,15 @@ Voting
 
 Profile
 -------
-- profile_base template
-- profile_page template
-- profile urls
+- profile_base, profile_page template - DONE
+- profile urls - DONE
 - Partial loading of all questions answered
 
--* Mention if answered sth anonymously
--* Profile - all questions answered, excerpt of user's answer (expandable/ link to actual answer). 
+-* Mention if answered sth anonymously - DONE
+-* Profile - all questions answered, excerpt of user's answer (expandable/ link to actual answer) - DONE
+-* Your and other user's profile - activate vote button on other profiles. - DONE
+-* Don't show anonymous answers when others view your profile. - DONE
+-* Link to user's profile pages from their answers - DONE
 -* All upvoted answers
 
 
@@ -67,12 +72,13 @@ Need thought
 - username? / only email
 - Name display format - first name (+ last name)/ email/ username
 - Profile page url - user id/ username
-
-
-
 - popular questions - NO
 - subscription to questions - NO
 - 
+
+Questions/ DEBUG
+================
+- upvoting works funny, doesn't respond for first time, then gets normal
 
 
 UI ideas

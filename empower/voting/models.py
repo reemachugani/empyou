@@ -1,9 +1,10 @@
-from django.db import models
+from datetime import datetime
+from django.conf import settings
+from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.generic import GenericForeignKey
 from django.contrib.auth import get_user_model
-from datetime import datetime
-from django.contrib.contenttypes import generic
+from django.db import models
 from voting.managers import VoteManager
 
 """
@@ -13,7 +14,7 @@ https://github.com/jezdez/django-voting
 """
 
 class Vote(models.Model):
-	user = models.ForeignKey(get_user_model())
+	user = models.ForeignKey(settings.AUTH_USER_MODEL)
 	content_type = models.ForeignKey(ContentType)
 	object_id = models.PositiveIntegerField()
 	content_object = GenericForeignKey('content_type', 'object_id')

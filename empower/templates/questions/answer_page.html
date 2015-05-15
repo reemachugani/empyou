@@ -12,15 +12,23 @@
 
 	<div class="answer-section">
 		<div class="answer">
-			<small class="text-muted">{{answer.answered_by.name}} added on {{answer.modified}}</small>
+			<small class="text-muted">
+				{% if answer.anonymous %}
+					Anonymous
+				{% else %}
+					<a href="{% url 'profile_page' answer.answered_by.pk %}">{{answer.answered_by.name}} </a>
+				{% endif %}
+				added on {{answer.modified}}
+			</small>
 			<p>{{answer.answer}}</p>
-			{% if user.is_authenticated %}
-				{% ifnotequal answer.answered_by user %}
+			{% if user.is_authenticated and answer.answered_by != user %}
 					<p name="csrfmiddlewaretoken" value="{% csrf_token %}">
 						<span class="glyphicon glyphicon-thumbs-up"></span>
-						<button type="button" class="btn btn-default btn-xs" id="upvote" data-update-url="{% url 'vote_answer' answer.pk %}">{% if vote_from_user %}Dislike{% else %}Like{% endif %}</button> <span class="answer-vote-count"> {{answer.votes.count}} vote{{answer.votes.count|pluralize}}</span>
+						<button type="button" class="btn btn-default btn-xs upvote" id="upvote-{{answer.pk}}" data-update-url="{% url 'vote_answer' answer.pk %}">
+							{% if vote_from_user %}Dislike{% else %}Like{% endif %}
+						</button> 
+						<span id="answer-vote-count-{{answer.pk}}"> {{answer.votes.count}} vote{{answer.votes.count|pluralize}}</span>
 					</p>
-				{% endifnotequal %}
 			{% else %}
 				<small class="text-muted">{{answer.votes.count}} vote{{answer.votes.count|pluralize}}</small>
 			{% endif %}

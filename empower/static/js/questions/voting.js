@@ -28,7 +28,7 @@ $.ajaxSetup({
 });
 
 $(document).ready(function(){
-	$('#upvote').on('click',function(){
+	$('.upvote').on('click',function(){
 		$.ajax({
 			data: { vote: (($(this).text() == "Like")? "true" : "false") },
 			type: 'POST',
@@ -36,12 +36,15 @@ $(document).ready(function(){
 
 			success : function(json) {
 				console.log(json); // log the returned json to the console
-				$(".answer-vote-count").text(json.updated_vote);
-				console.log("success"); // another sanity check
-				if($('#upvote').text() == "Dislike")
-					$('#upvote').text("Like");
+				if(json.updated_vote == 1)
+					$("#answer-vote-count-" + json.pk).text(json.updated_vote + " vote");
 				else
-					$('#upvote').text("Dislike");
+					$("#answer-vote-count-" + json.pk).text(json.updated_vote + " votes");
+				console.log("success"); // another sanity check
+				if($('#upvote-' + json.pk).text() == "Dislike")
+					$('#upvote-' + json.pk).text("Like");
+				else
+					$('#upvote-' + json.pk).text("Dislike");
 			},
 		});
 	}); 
