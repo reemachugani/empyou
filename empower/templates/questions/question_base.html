@@ -21,15 +21,16 @@
 			<a href={% url "all_questions" %}> View all... </a>
 		</div>
 
-		<div id="popularQuestions">
+		{% endblock sidebar %}
+	</div>
+
+{% endblock %}
+
+
+		<!-- <div id="popularQuestions">
 			<h4>Popular questions</h4>
 			{% for ques,votes in popular_questions %}
 				<div><a href={{ ques.get_absolute_url }}>{{ ques.title }}</a> {{ votes }}</div>
 			{% endfor %}
 			<a href={% url "all_questions" %}> View all... </a>
-		</div>
-
-		{% endblock sidebar %}
-	</div>
-
-{% endblock %}
+		</div> -->

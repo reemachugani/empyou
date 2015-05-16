@@ -74,10 +74,20 @@ Need thought
 - Profile page url - user id/ username
 - popular questions - NO
 - subscription to questions - NO
-- 
+
+
+Implement
+=========
+- load more answers.
+- More link on profile page for long answers.
+- Name of all users who liked
+- Login/logout
+- Landing page
+- Subscribe button/ Unsubscribe (mailchimp for email)
+
 
 Questions/ DEBUG
-================
+================	
 - upvoting works funny, doesn't respond for first time, then gets normal
 
 

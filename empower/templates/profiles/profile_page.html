@@ -7,7 +7,19 @@
 {% block answers_upvotes %}
 
 	<div class="User-info">
-		<h3>{{ profile_user.name }}</h3>
+		{% if user %}
+		    <h1>Welcome, {{profile_user.user.name}}</h1>
+<!-- 		    {% for account in user.socialaccount_set.all %} -->
+		        <!-- <h2 style="text-transform:capitalize;">{{ account.provider }} account data</h2> -->
+		        <!-- <p>UID: <a href="{{account.extra_data.link }}">{{ account.uid }}</a></p> -->
+		        <p><img width="50" height="50" src="{{ profile_user.avatar_url }}" /></p>
+		        
+		        <p>Email: {{ profile_user.user.email }}</p>
+		        <p>First Name: {{ profile_user.user.first_name }}</p>
+		        <p>Last Name: {{ profile_user.user.last_name }}</p>
+		        <p>Connect socially: <a href="{{ profile_user.social_profile }}">{{ profile_user.social_profile }}</a></p>
+		    {% endfor %}
+		{% endif %}
 	</div>
 
 	<h4 class="question-section"> Questions answered </h4>
